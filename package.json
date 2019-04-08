@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Leonardomotta/Projeto-P1#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongoose": "^5.5.0"
   }
 }

@@ -4,7 +4,6 @@ http = require('http');
 
 
 http.createServer(rm);
-console.log(config.port)
 
 
 
