@@ -1,5 +1,6 @@
 express = require('express');
 users = require('./users');
+auth = require('./auth')
 rm = express();
 var bodyParser = require('body-parser');
 
@@ -10,6 +11,8 @@ rm.use('/status', (req, res, next) => {
 })
 
 rm.use('/users', users)
+
+rm.use('/login' , auth)
 
 
 
