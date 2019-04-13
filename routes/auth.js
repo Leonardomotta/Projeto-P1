@@ -6,19 +6,16 @@ User = require('../models/userModel')
 auth = exp();
 
 auth.post("/auth", (req,res,next)=>{
-    console.log(req.body)
     User.findOne({ 
        
         email : req.body.email }).then((user)=>{
-            if (user.password == req.body.password){
-                
-            let token = jwt.sign({
-                email : user.email,
-                password : user.password,
-                name : user.name
-            },'teste');
+            if (user.password == req.body.password){ 
+                let token = jwt.sign({
+                    email: user.email,
+                    name: user.name
+                },'teste', {noTimestamp: true});
             
-            let tokenObj = new Token({token:token});
+            let tokenObj = new Token({token: token});
 
             tokenObj.save().then(()=>{
                 res.json(token);
@@ -29,14 +26,13 @@ auth.post("/auth", (req,res,next)=>{
 
             else {
                 res.status(403)
-                res.send("wrong password");
-
+                res.send("Wrong password");
             }
-        
+            
         }).catch(error=>{
                 console.log(error)
                 res.status(403)
-                res.send("user with email  does not exists");
+                res.send("User with that email does not exists");
             });
             
 

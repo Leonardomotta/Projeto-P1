@@ -1,6 +1,8 @@
 exp = require('express') ;
 User = require('../models/userModel')
 users = exp();
+authorizationMiddleware = require('../middlewares/authorization')
+jwt = require('jsonwebtoken')
 
 
 users.post('/create', (req, res, next) => {
@@ -30,5 +32,23 @@ users.post('/create', (req, res, next) => {
         }
     })
 });
+
+users.get("/user", authorizationMiddleware, (req, res, next) => {
+    token = req.headers.authorization.split(" ")[1]
+    tokenContent = jwt.decode(token)
+    User.findOne({email: tokenContent.email}, (err, user) => {
+        if(err){
+            res.status(404).json({err})
+        }else{
+            res.status(200).json(user)
+        }
+
+
+    })
+
+});
+
+
+
 
 module.exports = users;
