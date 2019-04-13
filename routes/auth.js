@@ -18,9 +18,12 @@ auth.post("/login", (req,res,next)=>{
                     email: user.email,
                     name: user.name
                 },'teste', {noTimestamp: true});
-            
+                res.send(token);}
 
-            res.send(token);}
+                else {
+                    res.status(403);
+                    res.send("user not verified , please check the confimation link on your email")
+                }
             }
 
             else {
