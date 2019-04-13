@@ -12,7 +12,7 @@ rm.use('/status', (req, res, next) => {
 
 rm.use('/users', users)
 
-rm.use('/login' , auth)
+rm.use('/auth' , auth)
 
 
 

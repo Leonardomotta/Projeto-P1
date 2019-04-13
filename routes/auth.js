@@ -1,11 +1,10 @@
 jwt = require("jsonwebtoken");
 exp = require('express')
-Token = require('../models/tokenModel')
 User = require('../models/userModel')
 
 auth = exp();
 
-auth.post("/auth", (req,res,next)=>{
+auth.post("/login", (req,res,next)=>{
     console.log(req.body)
     User.findOne({ 
        
@@ -18,14 +17,8 @@ auth.post("/auth", (req,res,next)=>{
                 name : user.name
             },'teste');
             
-            let tokenObj = new Token({token:token});
-
-            tokenObj.save().then(()=>{
-                res.json(token);
-            }).catch(error=>{
-                res.send("Error to saving token")
-                res.status("500")
-            });}
+            res.send(token);
+            }
 
             else {
                 res.status(403)
@@ -34,7 +27,7 @@ auth.post("/auth", (req,res,next)=>{
             }
         
         }).catch(error=>{
-                console.log(error)
+                
                 res.status(403)
                 res.send("user with email  does not exists");
             });
@@ -47,6 +40,12 @@ auth.post("/auth", (req,res,next)=>{
 
 
 }) 
+
+auth.get("",(req,res)=>{
+    console.log(req.query.token)
+    res.send('oi')
+    
+})
 
 
 module.exports = auth
