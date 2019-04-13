@@ -12,14 +12,15 @@ auth.post("/login", (req,res,next)=>{
        
         email : req.body.email }).then((user)=>{
             if (user.password == req.body.password){ 
+
+                if(user.verified){
                 let token = jwt.sign({
                     email: user.email,
-                    name: user.name,
-                    password : user.password
+                    name: user.name
                 },'teste', {noTimestamp: true});
             
 
-            res.send(token);
+            res.send(token);}
             }
 
             else {
@@ -38,7 +39,7 @@ auth.post("/login", (req,res,next)=>{
 auth.get("",(req,res)=>{
     
     let token =  req.query.token;
-    jwt.verify(token, 'teste', (err, decoded)=> {
+    jwt.verify(token, 'novoUsuario', (err, decoded)=> {
     
         
         if(err) { 
