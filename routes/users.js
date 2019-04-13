@@ -27,7 +27,8 @@ users.post('/create', (req, res, next) => {
             var usr = new User({
                 email :req.body.email,
                 password : req.body.password,
-                name : req.body.name
+                name : req.body.name,
+                verified: false
             });
             usr.save()
                 .then(

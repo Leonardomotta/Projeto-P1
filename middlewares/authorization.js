@@ -11,8 +11,9 @@ module.exports = (req, res, next) => {
         console.log(err)
         res.status(403).json({
             message: 'Auth error',
-            err
+            err            
         })
+        next();
     }
 
     
