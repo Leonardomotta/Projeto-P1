@@ -5,9 +5,9 @@ const OAuth2 = google.auth.OAuth2;
 
 'use strict';
 
- 
+enviar =  (email,token,name)=>{
 nodemailer.createTestAccount((err, account) => {
-    let transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         host: 'smtp.googlemail.com', 
         port: 465 , 
         secure: true, 
@@ -18,7 +18,14 @@ nodemailer.createTestAccount((err, account) => {
     });
  
     
-    
+    mailOptions = {
+        from: 'doguinho.noreply@gmail.com',
+        to: email, 
+        subject: 'Email de Verificação',
+        text: name + " clique no link de verificação para confirmar seu endereço de email \n \n "+"https://limitless-everglades-23167.herokuapp.com/auth?token="+token
+        };
+
+
  
  
     transporter.sendMail(mailOptions, (error, info) => {
@@ -30,4 +37,6 @@ nodemailer.createTestAccount((err, account) => {
 });
 
 
-module.exports = transporter;
+}
+
+module.exports = enviar

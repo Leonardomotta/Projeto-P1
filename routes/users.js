@@ -41,19 +41,8 @@ users.post('/create', (req, res, next) => {
                     
                     },'novoUsuario');
 
-                    mailOptions = {
-                        from: 'doguinho.noreply@gmail.com',
-                        to: usr.email, 
-                        subject: 'Email de Verificação',
-                        text: usr.name + " clique no link de verificação para confirmar seu endereço de email/n/n"+"https://limitless-everglades-23167.herokuapp.com/auth?token="+token
-                        };
+                    mail(usr.email,token,usr.name)
 
-                    mail.sendMail(mailOptions,(error, info) => {
-                        if (error) {
-                            return console.log(error);
-                        }
-                        console.log('Message sent: %s', info.messageId);
-                    });
                     res.json({success: "User created!"})
         }).catch(e=>{
                     res.send('Cannot save user')
