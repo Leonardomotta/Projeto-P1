@@ -3,6 +3,20 @@ User = require('../models/userModel')
 users = exp();
 authorizationMiddleware = require('../middlewares/authorization')
 jwt = require('jsonwebtoken')
+multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/users/profile_images")
+    },
+    filename: (req, file, cb) => {
+        token = req.headers.authorization.split(" ")[1]
+        tokenContent = jwt.decode(token)
+        cb(null, tokenContent.email + "." + file.mimetype.split("/")[1])
+    }
+});
+
+upload = multer({dest: 'uploads/users/', storage: storage})
 
 
 users.post('/create', (req, res, next) => {
@@ -42,12 +56,34 @@ users.get("/user", authorizationMiddleware, (req, res, next) => {
         }else{
             res.status(200).json(user)
         }
-
-
     })
-
 });
 
+
+users.put("/user", authorizationMiddleware, upload.single("photo"), (req, res, next) => {
+
+    token = req.headers.authorization.split(" ")[1]
+    tokenContent = jwt.decode(token)
+    User.findOne({email: tokenContent.email}, (err, user) => {
+        if(err){
+            res.status(404).json(err)
+        }else{
+            if(req.body.name){
+                user.name = req.body.name;
+            }
+            if(req.file){
+                user.photoId = tokenContent.email + "." + req.file.mimetype.split("/")[1];
+            }
+            user.save().then(
+                res.status(200).json({
+                    message: 'User updated!'
+                })
+            ).catch(e => {
+                res.status(500).json(e)
+            })
+        }
+    })
+})
 
 
 
