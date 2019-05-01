@@ -4,6 +4,7 @@ http = require('http');
 mongoose = require('mongoose');
 
 rm.use("/profile_images/", express.static(__dirname + '/uploads/users/profile_images'));
+rm.use("/post_images/", express.static(__dirname + '/uploads/posts/posts_images'))
 
 
 http.createServer(rm);
