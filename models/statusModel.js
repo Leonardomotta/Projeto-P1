@@ -6,7 +6,6 @@ var statusSchema = new Schema({
     authorName: String,
     authorEmail: String,
     content: String,
-    photoId: String
 });
 
 var statusModel = mongoose.model("Status", statusSchema);
