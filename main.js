@@ -3,6 +3,9 @@ rm = require("./routes/routerManager")
 http = require('http');
 mongoose = require('mongoose');
 sio  =  require('socket.io')
+lodash =  require("lodash");
+Msg =  require("./models/msgModel")
+conversas =  require("./models/conversaModel");
 usersSocket = {}
 
 rm.use("/profile_images/", express.static(__dirname + '/uploads/users/profile_images'));
@@ -32,6 +35,7 @@ io.on("chat mensage",(msg) =>{
 
     // atributos devem ser email 
     let destinatario = msg.to;
+
     io.to(usersSocket[destinatario].emit('chat mensage'),msg)
 
 }) 
