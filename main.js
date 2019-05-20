@@ -37,6 +37,11 @@ io.on("chat mensage",(msg) =>{
 }) 
 
 
+io.on("close session" , (email) =>{
+    usersSocket[email] = undefined;
+})
+
+
 
 
 
