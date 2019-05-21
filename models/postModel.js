@@ -6,7 +6,8 @@ var postSchema = new Schema({
     authorEmail: String,
     title: String,
     content: String,
-    photoId: String
+    photoId: String,
+    createdAt: { type: Date }
 });
 
 var postModel = mongoose.model("Post", postSchema);

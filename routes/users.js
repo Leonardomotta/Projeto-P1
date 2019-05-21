@@ -97,6 +97,20 @@ users.put("/user", authorizationMiddleware, upload.single("photo"), (req, res, n
     })
 })
 
+/*Get user photo given an email */
+users.get('/avatar/:email', (req, res, next) => {
+    User.findOne({email: req.params.email}, (err, usr) => {
+        if(err){
+            res.status(404).json({
+                message: 'user not found',
+                err
+            })
+        }else{
+            res.redirect(301, '/profile_images/' + usr.photoId);
+        }
+    })
+});
+
 
 
 module.exports = users;

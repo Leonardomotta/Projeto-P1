@@ -30,7 +30,8 @@ posts.post('/posts', authMiddleware, upload.single('photo'), (req, res, next) =>
         authorEmail: tokenContent.email,
         title: req.body.title,
         content: req.body.content,
-        photoId: req.file.filename
+        photoId: req.file.filename,
+        createdAt: new Date()
     };
     Post.create(post, (err, createdPost) => {
         if(err) {
@@ -47,6 +48,9 @@ posts.get("/posts", authMiddleware, (req, res, next) => {
         if(err){
             res.status(500)
         }else{
+            posts.sort((postA, postB) => {
+                return postA.createdAt - postB.createdAt;
+            });
             res.status(200).json(posts)
         }
     })
