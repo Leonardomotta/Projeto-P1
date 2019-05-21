@@ -31,13 +31,24 @@ io.on("connection", (socket) => {
     })
 
     socket.on("Message", (msg) => {
-        console.log(usersSocket)
+        
         msg = JSON.parse(msg)
         let remetente = msg.from
         let destinatario = msg.to;
        
         io.to(usersSocket[destinatario].emit('receive'), msg)
+        io.to(usersSocket[destinatario].emit('msg-notify'), msg)
 
+
+    })
+
+    socket.on("New post", ()=>{
+
+        for(i in usersSocket) {
+            io.to(usersSocket[i].emit('new post'), msg)
+        }
+
+        
     })
 
 
