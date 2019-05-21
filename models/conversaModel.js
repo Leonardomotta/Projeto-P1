@@ -5,10 +5,11 @@ Msg = ("./msgModel");
 var conversaSchema = new Schema({
     
 mensagens : [Msg],
-usuarios : Set
+email1 : String ,
+email2 : String
 
 });
 
-var mensageModel = mongoose.model("Mensage", mensageSchema);
+var mensageModel = mongoose.model('Conversa',conversaSchema);
 
 module.exports = mensageModel;

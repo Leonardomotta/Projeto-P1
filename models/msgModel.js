@@ -1,4 +1,4 @@
-ongoose = require('mongoose')
+mongoose = require('mongoose')
 Schema = mongoose.Schema
 
 var mensageSchema = new Schema({
