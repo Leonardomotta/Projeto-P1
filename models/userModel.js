@@ -1,4 +1,5 @@
 mongoose = require("mongoose");
+Conversa =  require("./conversaModel")
 Schema = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -6,7 +7,8 @@ var userSchema = new Schema({
     password: String,
     name: String,
     photoId: String,
-    verified : Boolean
+    verified : Boolean,
+    conversas : []
 
 }) 
 

@@ -4,9 +4,8 @@ Msg = ("./msgModel");
 
 var conversaSchema = new Schema({
     
-mensagens : [Msg],
-email1 : String ,
-email2 : String
+mensagens : [],
+identificador : String
 
 });
 

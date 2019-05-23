@@ -5,6 +5,7 @@ mongoose = require('mongoose');
 sio = require('socket.io')
 lodash = require("lodash");
 Msg = require("./models/msgModel")
+User = require("./models/userModel")
 jwt = require("jsonwebtoken");
 conversas = require("./models/conversaModel");
 usersSocket = {}
@@ -39,8 +40,77 @@ io.on("connection", (socket) => {
         io.to(usersSocket[destinatario].emit('receive'), msg)
         io.to(usersSocket[destinatario].emit('msg-notify'), msg)
 
+        cvsid = [remetente,destinatario]
+        cvsid = cvsid.sort()
+        cvsid = cvsid.join()
 
-    })
+        message = new Msg({
+            remetente : remetente,
+            destinatario : destinatario,
+            texto: msg.texto,
+            horario : new Date()
+        })
+
+        // Pegando os dois usuarios 
+        //
+        User.findOne({email : remetente},(err,data)=>{
+
+            if(!err){
+                 existe = false
+                for (i = 0; i < data.conversas.length; i++) { 
+                    if(data.conversas[i] == cvsid){
+                        existe = true;
+                        data.conversas[i].mensagens.push(message)
+                        data.save((err)=>{})
+                    }}
+
+                    if(existe == false){
+                        cvs =  new conversas({
+   
+                            mensagens : [],
+                            identificador : cvsid
+                            
+                            });
+                        cvs.mensagens.push(message)
+                        data.conversas.push(cvs)
+                        data.save((err)=>{})
+                    }
+            }
+
+        })
+
+        User.findOne({email : destinatario},(err,data)=>{
+
+            if(!err){
+                existe = false
+               for (i = 0; i < data.conversas.length; i++) { 
+                   if(data.conversas[i] == cvsid){
+                       existe = true;
+                       data.conversas[i].mensagens.push(message)
+                       data.save((err)=>{})
+                   }}
+
+                   if(existe == false){
+                       cvs =  new conversas({
+   
+                           mensagens : [],
+                           identificador : cvsid
+                           
+                           });
+                       cvs.mensagens.push(message)
+                       data.conversas.push(cvs)
+                       data.save((err)=>{})
+                   }
+           }
+
+        })
+        
+            
+    }
+        
+
+
+    )
 
     socket.on("New post", ()=>{
 

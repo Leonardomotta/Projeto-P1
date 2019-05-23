@@ -29,7 +29,8 @@ users.post('/create', (req, res, next) => {
                 email :req.body.email,
                 password : req.body.password,
                 name : req.body.name,
-                verified: false
+                verified: false,
+                conversas : []
             });
             usr.save()
                 .then(()=>{
