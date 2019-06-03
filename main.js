@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
     
     
     socket.on("handshake", (token) => {
-        
+        console.log('handshake concluido')
         const user = jwt.decode(token);
        
         if (usersSocket[user.email] === undefined) {
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("Message", (msg) => {
-        
+        console.log("mensagem recebida")
         msg = JSON.parse(msg)
         let remetente = msg.from
         let destinatario = msg.to;
@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
             if(!err){
                  existe = false
                 for (i = 0; i < data.conversas.length; i++) { 
-                    if(data.conversas[i] == cvsid){
+                    if(data.conversas[i].identificador == cvsid){
                         existe = true;
                         data.conversas[i].mensagens.push(message)
                         data.save((err)=>{})
@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
             if(!err){
                 existe = false
                for (i = 0; i < data.conversas.length; i++) { 
-                   if(data.conversas[i] == cvsid){
+                   if(data.conversas[i].identificador == cvsid){
                        existe = true;
                        data.conversas[i].mensagens.push(message)
                        data.save((err)=>{})
