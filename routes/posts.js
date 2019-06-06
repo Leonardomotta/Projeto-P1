@@ -56,6 +56,17 @@ posts.get("/posts", authMiddleware, (req, res, next) => {
     })
 })
 
+//To get an specific post
+posts.get("/posts/:postId", authMiddleware, (req, res, next) => {
+    Post.findById( req.params.postId, (err, post) => {
+        if(err){
+            res.status(500)
+        }else{          
+            res.status(200).json(post);
+        }
+    })
+})
+
 //Delete a post by specifying an id
 posts.delete("/posts/:postId", authMiddleware, (req, res, next) => {
     Post.findByIdAndRemove(req.params.postId, (err, removedPost) => {
