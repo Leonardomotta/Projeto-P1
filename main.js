@@ -23,8 +23,9 @@ io.on("connection", (socket) => {
     
     
     socket.on("handshake", (token) => {
+        token = token.trim()
         console.log('handshake concluido')
-        const user = jwt.decode(token);
+        const user = jwt.decode(token);//
        
         if (usersSocket[user.email] === undefined) {
             usersSocket[user.email] = socket;
@@ -36,9 +37,9 @@ io.on("connection", (socket) => {
         msg = JSON.parse(msg)
         let remetente = msg.from
         let destinatario = msg.to;
-       
+        if(usersSocket[destinatario]){
         io.to(usersSocket[destinatario].emit('receive'), msg)
-        io.to(usersSocket[destinatario].emit('msg-notify'), msg)
+        io.to(usersSocket[destinatario].emit('msg-notify'), msg)}
 
         cvsid = [remetente,destinatario]
         cvsid = cvsid.sort()
@@ -54,14 +55,17 @@ io.on("connection", (socket) => {
         // Pegando os dois usuarios 
         //
         User.findOne({email : remetente},(err,data)=>{
-
+           
             if(!err){
+                 
                  existe = false
                 for (i = 0; i < data.conversas.length; i++) { 
                     if(data.conversas[i].identificador == cvsid){
                         existe = true;
                         data.conversas[i].mensagens.push(message)
-                        data.save((err)=>{})
+                        data.markModified('conversas');
+                        data.save(e =>{})
+                        break
                     }}
 
                     if(existe == false){
@@ -73,6 +77,7 @@ io.on("connection", (socket) => {
                             });
                         cvs.mensagens.push(message)
                         data.conversas.push(cvs)
+                        data.markModified('conversas')
                         data.save((err)=>{})
                     }
             }
@@ -87,6 +92,7 @@ io.on("connection", (socket) => {
                    if(data.conversas[i].identificador == cvsid){
                        existe = true;
                        data.conversas[i].mensagens.push(message)
+                       data.markModified('conversas');
                        data.save((err)=>{})
                    }}
 
@@ -99,6 +105,7 @@ io.on("connection", (socket) => {
                            });
                        cvs.mensagens.push(message)
                        data.conversas.push(cvs)
+                       data.markModified('conversas')
                        data.save((err)=>{})
                    }
            }
