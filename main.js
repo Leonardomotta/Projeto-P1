@@ -34,6 +34,8 @@ io.on("connection", (socket) => {
     })
 
     socket.on("Message", (msg) => {
+        console.log("A mensagem eh:")
+        console.log(msg)
         console.log("mensagem recebida")
         msg = JSON.parse(msg)
         let remetente = msg.from
