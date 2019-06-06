@@ -37,7 +37,6 @@ io.on("connection", (socket) => {
         console.log("A mensagem eh:")
         console.log(msg)
         console.log("mensagem recebida")
-        msg = JSON.parse(msg)
         let remetente = msg.from
         let destinatario = msg.to;
         if(usersSocket[destinatario]){
