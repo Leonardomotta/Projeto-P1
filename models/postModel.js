@@ -7,7 +7,11 @@ var postSchema = new Schema({
     title: String,
     content: String,
     photoId: String,
-    createdAt: { type: Date }
+    createdAt: { type: Date },
+    postType: {
+        type: String,
+        enum: ['lost-animal', 'adoption', 'crossing']
+    }
 });
 
 var postModel = mongoose.model("Post", postSchema);
