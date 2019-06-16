@@ -28,9 +28,11 @@ io.on("connection", (socket) => {
         console.log('handshake concluido')
         const user = jwt.decode(token);//
        
-        if (usersSocket[user.email] === undefined) {
+    
             usersSocket[user.email] = socket;
-        }
+
+            console.log(usersSocket);
+        
     })
 
     socket.on("Message", (msg) => {
