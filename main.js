@@ -37,11 +37,13 @@ io.on("connection", (socket) => {
         console.log("A mensagem eh:")
         console.log(msg)
         console.log("mensagem recebida")
+        if(typeof(msg) == 'string'){msg = JSON.parse(msg.trim())}
         let remetente = msg.from
+        console.log(remetente)
         let destinatario = msg.to;
         if(usersSocket[destinatario]){
-        io.to(usersSocket[destinatario].emit('receive'), msg)
-        io.to(usersSocket[destinatario].emit('msg-notify'), msg)}
+        io.to(usersSocket[destinatario].emit('receive',msg))
+        io.to(usersSocket[destinatario].emit('msg-notify',msg))}
 
         cvsid = [remetente,destinatario]
         cvsid = cvsid.sort()
@@ -56,9 +58,10 @@ io.on("connection", (socket) => {
 
         // Pegando os dois usuarios 
         //
+        console.log(msg.from)
         User.findOne({email : remetente},(err,data)=>{
            
-            if(!err){
+            if(!err && data != undefined){
                  
                  existe = false
                 for (i = 0; i < data.conversas.length; i++) { 
@@ -85,10 +88,11 @@ io.on("connection", (socket) => {
             }
 
         })
+        console.log(destinatario)
 
         User.findOne({email : destinatario},(err,data)=>{
 
-            if(!err){
+            if(!err && data != undefined){
                 existe = false
                for (i = 0; i < data.conversas.length; i++) { 
                    if(data.conversas[i].identificador == cvsid){
