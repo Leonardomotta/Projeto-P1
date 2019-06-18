@@ -78,7 +78,7 @@ posts.get("/post/:postId", (req, res, next) => {
              + '<br/>'
              + 'Foto do post:'
              + '<br/>'
-             + '<Img src="http://limitless-everglades-23167.herokuapp.com/post_images/' + post.photoId +'">'
+             + '<img src="http://limitless-everglades-23167.herokuapp.com/post_images/' + post.photoId +'">'
         )
         }
     })
