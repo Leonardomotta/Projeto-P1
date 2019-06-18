@@ -58,7 +58,7 @@ posts.get("/posts", authMiddleware, (req, res, next) => {
 })
 
 //To get an specific post
-posts.get("/posts/:postId", (req, res, next) => {
+posts.get("/post/:postId", (req, res, next) => {
     Post.findById( req.params.postId, (err, post) => {
         if(err){
             res.status(500)
