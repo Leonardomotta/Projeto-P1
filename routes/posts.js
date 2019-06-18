@@ -58,12 +58,28 @@ posts.get("/posts", authMiddleware, (req, res, next) => {
 })
 
 //To get an specific post
-posts.get("/posts/:postId", authMiddleware, (req, res, next) => {
+posts.get("/posts/:postId", (req, res, next) => {
     Post.findById( req.params.postId, (err, post) => {
         if(err){
             res.status(500)
         }else{          
-            res.status(200).json(post);
+            res.status(200).send('<h2>(Em breve um html bonito com informações do post)<h2/>'
+             + '<br/>'
+             + '<br/>'
+             + '<b>' + 'Titulo: ' + post.title
+             + '<br/>'
+             + 'Conteudo: ' + post.content
+             + '<br/>'
+             + 'Autor: ' + post.authorName 
+             + '<br/>'
+             + 'Email do autor do post: ' + post.authorEmail
+             + '<br/>'
+             + 'Data do post: ' + post.createdAt + '</b>'
+             + '<br/>'
+             + 'Foto do post:'
+             + '<br/>'
+             + '<Img src=http://limitless-everglades-23167.herokuapp.com/post_images/' + post.photoId +'>'
+        )
         }
     })
 })
