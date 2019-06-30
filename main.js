@@ -9,6 +9,9 @@ User = require("./models/userModel")
 jwt = require("jsonwebtoken");
 conversas = require("./models/conversaModel");
 usersSocket = {}
+var expressLayouts = require('express-ejs-layouts')
+rm.set('view engine', 'ejs')
+rm.use(expressLayouts)
 
 //Rotas para fotos
 rm.use("/profile_images/", express.static(__dirname + '/uploads/users/profile_images'));
