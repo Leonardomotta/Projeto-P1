@@ -3,19 +3,21 @@ users = require('./users');
 auth = require('./auth');
 posts = require('./posts')
 authMiddleware = require('../middlewares/authorization')
+cors = require('cors');
 rm = express();
 var bodyParser = require('body-parser');
 
+rm.use(cors())
 rm.use(bodyParser.json());
-rm.use(bodyParser.urlencoded({extended: true}))
+rm.use(bodyParser.urlencoded({ extended: true }))
 
 rm.use('/status', authMiddleware, (req, res, next) => {
-    res.json({status: 'Server running!'})
+    res.json({ status: 'Server running!' })
 })
 
 rm.use('/users', users)
 
-rm.use('/auth' , auth)
+rm.use('/auth', auth)
 
 rm.use(posts)
 
