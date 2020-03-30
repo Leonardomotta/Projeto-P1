@@ -1,4 +1,4 @@
-exp = require('express') ;
+exp = require('express');
 User = require('../models/userModel')
 users = exp();
 authorizationMiddleware = require('../middlewares/authorization')
@@ -17,45 +17,47 @@ var storage = multer.diskStorage({
     }
 });
 
-upload = multer({dest: 'uploads/users/', storage: storage})
+upload = multer({ dest: 'uploads/users/', storage: storage })
 
 
 users.post('/create', (req, res, next) => {
-    
-    User.findOne({email: req.body.email}, (err, user) => {
-        if(!user){
-            if(req.body.email && req.body.password && req.body.name){
-            var usr = new User({
-                email :req.body.email,
-                password : req.body.password,
-                name : req.body.name,
-                verified: false,
-                conversas : []
-            });
-            usr.save()
-                .then(()=>{
 
-                    token = jwt.sign({
-                        email: usr.email,
-                        name: usr.name,
-                        password: usr.password
-                    
-                    },'novoUsuario');
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (!user) {
+            if (req.body.email && req.body.password && req.body.name) {
+                var usr = new User({
+                    email: req.body.email,
+                    password: req.body.password,
+                    name: req.body.name,
+                    verified: false,
+                    conversas: []
+                });
+                usr.save()
+                    .then(() => {
 
-                    mail(usr.email,token,usr.name)
+                        token = jwt.sign({
+                            email: usr.email,
+                            name: usr.name,
+                            password: usr.password
 
-                    res.json({success: "User created!"})
-        }).catch(e=>{
-                    res.send('Cannot save user')
-                    res.status(500);
-                })}
+                        }, 'novoUsuario');
+
+                        mail(usr.email, token, usr.name)
+
+                        res.json({ success: "User created!" })
+                    }).catch(e => {
+                        res.send('Cannot save user')
+                        res.status(500);
+                    })
+            }
             else {
                 res.status(400)
                 res.send("Bad request")
             }
-                
-        }else{
-            res.json({error: "Current user already exists"})
+
+        } else {
+            res.status(409)
+            res.json({ error: "Current user already exists" })
         }
     })
 });
@@ -63,10 +65,10 @@ users.post('/create', (req, res, next) => {
 users.get("/user", authorizationMiddleware, (req, res, next) => {
     token = req.headers.authorization.split(" ")[1]
     tokenContent = jwt.decode(token)
-    User.findOne({email: tokenContent.email}, (err, user) => {
-        if(err){
-            res.status(404).json({err})
-        }else{
+    User.findOne({ email: tokenContent.email }, (err, user) => {
+        if (err) {
+            res.status(404).json({ err })
+        } else {
             res.status(200).json(user)
         }
     })
@@ -77,14 +79,14 @@ users.put("/user", authorizationMiddleware, upload.single("photo"), (req, res, n
 
     token = req.headers.authorization.split(" ")[1]
     tokenContent = jwt.decode(token)
-    User.findOne({email: tokenContent.email}, (err, user) => {
-        if(err){
+    User.findOne({ email: tokenContent.email }, (err, user) => {
+        if (err) {
             res.status(404).json(err)
-        }else{
-            if(req.body.name){
+        } else {
+            if (req.body.name) {
                 user.name = req.body.name;
             }
-            if(req.file){
+            if (req.file) {
                 user.photoId = tokenContent.email + "." + req.file.mimetype.split("/")[1];
             }
             user.save().then(
@@ -100,13 +102,13 @@ users.put("/user", authorizationMiddleware, upload.single("photo"), (req, res, n
 
 /*Get user photo given an email */
 users.get('/avatar/:email', (req, res, next) => {
-    User.findOne({email: req.params.email}, (err, usr) => {
-        if(err){
+    User.findOne({ email: req.params.email }, (err, usr) => {
+        if (err) {
             res.status(404).json({
                 message: 'user not found',
                 err
             })
-        }else{
+        } else {
             res.redirect(301, '/profile_images/' + usr.photoId);
         }
     })
