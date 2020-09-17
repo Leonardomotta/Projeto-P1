@@ -9,8 +9,9 @@ var userSchema = new Schema({
     lastName: String,
     photoId: String,
     verified: Boolean,
+    address: String,
+    additionalInfo: String,
     conversas: []
-
 })
 
 var userModel = mongoose.model('User', userSchema);

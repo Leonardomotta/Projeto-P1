@@ -31,6 +31,8 @@ users.post('/create', (req, res, next) => {
                     name: req.body.name,
                     lastName: req.body.lastName,
                     verified: false,
+                    address: "-",
+                    additionalInfo: "-",
                     conversas: []
                 });
                 usr.save()
@@ -86,6 +88,15 @@ users.put("/user", authorizationMiddleware, upload.single("photo"), (req, res, n
         } else {
             if (req.body.name) {
                 user.name = req.body.name;
+            }
+            if (req.body.lastName) {
+                user.lastName = req.body.lastName
+            }
+            if (req.body.address) {
+                user.address = req.body.address
+            }
+            if (req.body.additionalInfo) {
+                user.additionalInfo = req.body.additionalInfo;
             }
             if (req.file) {
                 user.photoId = tokenContent.email + "." + req.file.mimetype.split("/")[1];
