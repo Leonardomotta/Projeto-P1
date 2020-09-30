@@ -33,7 +33,8 @@ users.post('/create', (req, res, next) => {
                     verified: false,
                     address: "-",
                     additionalInfo: "-",
-                    conversas: []
+                    conversas: [],
+                    photoId: 'addImage.png'
                 });
                 usr.save()
                     .then(() => {
