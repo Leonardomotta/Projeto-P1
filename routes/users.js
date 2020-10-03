@@ -128,5 +128,16 @@ users.get('/avatar/:email', (req, res, next) => {
 });
 
 
+users.get('/info/:email', (req, res, next) => {
+    User.findOne({ email: req.params.email }, (err, usr) => {
+        if (err) {
+            res.status(404).json({ error: 'User not found' })
+        } else {
+            res.status(200).json(usr);
+        }
+    })
+})
+
+
 
 module.exports = users;
